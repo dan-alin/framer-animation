@@ -5,7 +5,9 @@ parallel = true
 glob = "*.toml"
 run = "pnpm taplo check {staged_files}"
 
-
+[pre-commit.commands.lint]
+glob = "*.{ts,tsx,js,jsx}"
+run = "pnpm eslint --fix {staged_files} && git update-index --again"
 
 [pre-commit.commands.format]
 glob = "*.{tsx,ts,js,jsx,css,json}"
