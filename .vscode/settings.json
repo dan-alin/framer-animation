@@ -6,5 +6,8 @@
 		"source.organizeImports": "always",
 		"source.addMissingImports.ts": "always",
 		"source.fixAll.ts": "always"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	}
 }

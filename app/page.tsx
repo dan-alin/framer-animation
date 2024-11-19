@@ -1,7 +1,97 @@
-export default function Home() {
+'use client';
+import { Button } from '@/components/button';
+import Dialog from '@/components/dialog';
+import Drawer from '@/components/drawer';
+import { default as FlipWrap } from '@/components/flip-wrap';
+import { flipWrapStore } from '@/stores/current-card.store';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+type FrontCardProps = {
+	id: number;
+};
+
+const FrontCard = ({ id }: FrontCardProps) => {
 	return (
-		<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-			test to chcheck if eslint works
+		<div className=" h-full w-full">
+			<h1 className=" bg-primary-dark text-white uppercase rounded-t-lg font-bold px-2 py-1">
+				Front {id + 1}
+			</h1>
+			<p className="text-sm p-2 text-gray-600">
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, aspernatur.
+			</p>
+		</div>
+	);
+};
+
+export default function Home() {
+	const [bottomOpen, setBottomOpen] = useState(false);
+	const [fadeOpen, setFadeOpen] = useState(false);
+	const [drawerOpen, setDrawerOpen] = useState(false);
+
+	const navigate = useRouter();
+
+	const handleBottomClick = () => {
+		setBottomOpen(!bottomOpen);
+	};
+
+	const handleFadeClick = () => {
+		setFadeOpen(!fadeOpen);
+	};
+
+	const handleDrawerClick = () => {
+		setDrawerOpen(!drawerOpen);
+	};
+
+	const completeNavigation = () => {
+		flipWrapStore.isAnimating = false;
+
+		flipWrapStore.triggered && navigate.push(`/${flipWrapStore.flippedId + 1}`);
+	};
+
+	return (
+		<div className="grid grid-rows-[20px_1fr] items-center justify-items-center min-h-screen p-8 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] ">
+			<div className="flex gap-4 px-4 justify-end w-full">
+				<Button onClick={handleFadeClick} type="button">
+					Fade
+				</Button>
+				<Button onClick={handleBottomClick} type="button">
+					Bottom
+				</Button>
+
+				<Button onClick={handleDrawerClick} type="button">
+					Drawer
+				</Button>
+			</div>
+			<div className="grid grid-cols-3 w-full h-full px-4 gap-8">
+				{Array.from({ length: 12 }).map((_, i) => (
+					<FlipWrap
+						onAnimationEnd={completeNavigation}
+						key={i}
+						id={i}
+						front={<FrontCard id={i} />}
+					/>
+				))}
+			</div>
+
+			<Dialog
+				showFooter
+				bottom
+				onCancel={handleBottomClick}
+				onConfirm={handleBottomClick}
+				body="Bottom modal example"
+				open={bottomOpen}
+				title="Modal"
+			/>
+			<Dialog
+				showFooter
+				onCancel={handleFadeClick}
+				onConfirm={handleFadeClick}
+				body="Fade modal example"
+				open={fadeOpen}
+				title="Modal"
+			/>
+			<Drawer closeDrawer={handleDrawerClick} open={drawerOpen} />
 		</div>
 	);
 }
