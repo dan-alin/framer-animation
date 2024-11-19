@@ -58,13 +58,15 @@ const FlipWrap = ({ id, front, onAnimationEnd }: MotionLineCardProps) => {
 				translateY: y,
 				zIndex: isCurrent ? 100 : 1,
 				scale: isCurrent ? 7 : 1,
-				opacity: 1
+				opacity: 1,
+				backgroundColor: isCurrent ? '#f3f4f6' : 'white'
 			}}
 			transition={{
 				zIndex: isCurrent ? { delay: 0 } : { delay: 0.5 },
 				scale: isCurrent && { delay: 0.4, duration: 0.5 },
 				translateY: isCurrent && { delay: 0, duration: 0.3 },
-				translateX: isCurrent && { delay: 0, duration: 0.3 }
+				translateX: isCurrent && { delay: 0, duration: 0.3 },
+				backgroundColor: { duration: 0.5, delay: 0.5 }
 			}}
 			onAnimationComplete={onAnimationEnd}
 		>
