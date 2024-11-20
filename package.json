@@ -19,6 +19,7 @@
 		"clsx": "^2.1.1",
 		"eslint-config-prettier": "^9.1.0",
 		"lefthook": "^1.8.2",
+		"lucide-react": "^0.460.0",
 		"motion": "^11.11.17",
 		"next": "15.0.3",
 		"prettier": "^3.3.3",

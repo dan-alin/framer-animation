@@ -1,6 +1,6 @@
 import { flipWrapStore } from '@/stores/current-card.store';
 import { cn } from '@/utils/cn';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { ReactNode, useRef, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -39,43 +39,53 @@ const FlipWrap = ({ id, front, onAnimationEnd, scale = 7 }: MotionLineCardProps)
 	};
 
 	return (
-		<motion.div
-			ref={cardRef}
-			className={cn(
-				' bg-white rounded-lg shadow-lg  w-full h-[150px]  transform-3d cursor-pointer',
-				isAnimating && 'pointer-events-none'
-			)}
-			initial={{
-				rotateY: 0,
-				translateX: 0,
-				translateY: 0,
-				zIndex: 1,
-				scale: 0.8,
-				opacity: 0
-			}}
-			animate={{
-				rotateY: isCurrent ? 180 : 0,
-				translateX: x,
-				translateY: y,
-				zIndex: isCurrent ? 10 : 1,
-				scale: isCurrent ? scale : 1,
-				opacity: 1,
-				backgroundColor: isCurrent ? '#f3f4f6' : 'white'
-			}}
-			transition={{
-				zIndex: isCurrent ? { delay: 0 } : { delay: 0.5 },
-				scale: isCurrent && { delay: 0.4, duration: 0.5 },
-				translateY: isCurrent && { delay: 0, duration: 0.3 },
-				translateX: isCurrent && { delay: 0, duration: 0.3 },
-				backgroundColor: { duration: 0.5, delay: 0.5 }
-			}}
-			onAnimationComplete={onAnimationEnd}
-		>
-			{/* FRONT */}
-			<div className="absolute  backface-hidden h-full w-full" onClick={openCard}>
-				{front}
-			</div>
-		</motion.div>
+		<AnimatePresence>
+			<motion.div
+				ref={cardRef}
+				className={cn(
+					' bg-white rounded-lg shadow-lg  w-full h-[200px]  transform-3d cursor-pointer',
+					isAnimating && 'pointer-events-none'
+				)}
+				initial={{
+					rotateY: 0,
+					translateX: 0,
+					translateY: 0,
+					zIndex: 1,
+					scale: 0.8,
+					opacity: 0
+				}}
+				animate={{
+					rotateY: isCurrent ? 180 : 0,
+					translateX: x,
+					translateY: y,
+					zIndex: isCurrent ? 10 : 1,
+					scale: isCurrent ? scale : 1,
+					opacity: 1,
+					backgroundColor: isCurrent ? '#f3f4f6' : 'white'
+				}}
+				transition={{
+					zIndex: isCurrent ? { delay: 0 } : { delay: 0.5 },
+					scale: isCurrent && { delay: 0.4, duration: 0.5 },
+					translateY: isCurrent && { delay: 0, duration: 0.3 },
+					translateX: isCurrent && { delay: 0, duration: 0.3 },
+					backgroundColor: { duration: 0.5, delay: 0.5 }
+				}}
+				exit={{
+					rotateY: 0,
+					translateX: 0,
+					translateY: 0,
+					zIndex: 1,
+					scale: 0.8,
+					opacity: 0
+				}}
+				onAnimationComplete={onAnimationEnd}
+			>
+				{/* FRONT */}
+				<div className="absolute  backface-hidden h-full w-full" onClick={openCard}>
+					{front}
+				</div>
+			</motion.div>
+		</AnimatePresence>
 	);
 };
 
