@@ -1,11 +1,11 @@
 import { proxy } from 'valtio';
 
-type FlippedModalStoreProps = {
+type FlipModalStoreProps = {
 	flippedId: number;
 	isAnimating: boolean;
 };
 
-export const flippedModalStore = proxy<FlippedModalStoreProps>({
+export const flipModalStore = proxy<FlipModalStoreProps>({
 	flippedId: -1,
 	isAnimating: false
 });

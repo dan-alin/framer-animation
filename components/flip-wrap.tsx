@@ -8,9 +8,10 @@ type MotionLineCardProps = {
 	id: number;
 	front: ReactNode;
 	onAnimationEnd?: () => void;
+	scale?: number;
 };
 
-const FlipWrap = ({ id, front, onAnimationEnd }: MotionLineCardProps) => {
+const FlipWrap = ({ id, front, onAnimationEnd, scale = 7 }: MotionLineCardProps) => {
 	const { flippedId, isAnimating } = useSnapshot(flipWrapStore);
 	const cardRef = useRef<HTMLDivElement>(null);
 	const [x, setX] = useState(0);
@@ -41,7 +42,7 @@ const FlipWrap = ({ id, front, onAnimationEnd }: MotionLineCardProps) => {
 		<motion.div
 			ref={cardRef}
 			className={cn(
-				' bg-white rounded-lg shadow-lg h-full w-full   transform-3d cursor-pointer',
+				' bg-white rounded-lg shadow-lg  w-full h-[150px]  transform-3d cursor-pointer',
 				isAnimating && 'pointer-events-none'
 			)}
 			initial={{
@@ -56,8 +57,8 @@ const FlipWrap = ({ id, front, onAnimationEnd }: MotionLineCardProps) => {
 				rotateY: isCurrent ? 180 : 0,
 				translateX: x,
 				translateY: y,
-				zIndex: isCurrent ? 100 : 1,
-				scale: isCurrent ? 7 : 1,
+				zIndex: isCurrent ? 10 : 1,
+				scale: isCurrent ? scale : 1,
 				opacity: 1,
 				backgroundColor: isCurrent ? '#f3f4f6' : 'white'
 			}}

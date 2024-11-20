@@ -33,7 +33,7 @@ export default function Detail() {
 	};
 
 	return (
-		<motion.div className="grid grid-rows-12 grid-cols-12 gap-4 items-center justify-items-center min-h-screen p-8 pb-20  ">
+		<motion.div className="grid grid-rows-12 grid-cols-12 gap-4 items-center justify-items-center  h-full p-8   ">
 			<motion.div
 				initial={{ opacity: 0, translateY: -100 }}
 				animate={{ opacity: 1, translateY: 0 }}
@@ -46,7 +46,7 @@ export default function Detail() {
 				initial={{ opacity: 0, translateX: 100 }}
 				animate={{ opacity: 1, translateX: 0 }}
 				transition={{ duration: 0.5, delay: 1 }}
-				className=" h-full w-full col-span-9 row-span-8 "
+				className=" h-full w-full col-span-9 row-span-8"
 			>
 				<Card title="section 2" />
 			</motion.div>

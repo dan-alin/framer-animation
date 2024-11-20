@@ -4,8 +4,9 @@ import Dialog from '@/components/dialog';
 import Drawer from '@/components/drawer';
 import { default as FlipWrap } from '@/components/flip-wrap';
 import { flipWrapStore } from '@/stores/current-card.store';
+import { flipModalStore } from '@/stores/flipped-modal.store';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type FrontCardProps = {
 	id: number;
@@ -14,7 +15,7 @@ type FrontCardProps = {
 const FrontCard = ({ id }: FrontCardProps) => {
 	return (
 		<div className=" h-full w-full">
-			<h1 className=" bg-primary-dark text-white uppercase rounded-t-lg font-bold px-2 py-1">
+			<h1 className=" bg-primary-dark text-white uppercase rounded-t-lg font-bold px-2 py-1 ">
 				Front {id + 1}
 			</h1>
 			<p className="text-sm p-2 text-gray-600">
@@ -30,6 +31,10 @@ export default function Home() {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 
 	const navigate = useRouter();
+
+	useEffect(() => {
+		flipModalStore.flippedId = -1;
+	}, []);
 
 	const handleBottomClick = () => {
 		setBottomOpen(!bottomOpen);
@@ -50,8 +55,8 @@ export default function Home() {
 	};
 
 	return (
-		<div className="grid grid-rows-[20px_1fr] items-center justify-items-center min-h-screen p-8 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] ">
-			<div className="flex gap-4 px-4 justify-end w-full">
+		<div className="flex flex-col items-center justify-items-center h-full p-8 gap-8  ">
+			<div className="flex gap-4  justify-end w-full">
 				<Button onClick={handleFadeClick} type="button">
 					Fade
 				</Button>
@@ -63,7 +68,7 @@ export default function Home() {
 					Drawer
 				</Button>
 			</div>
-			<div className="grid grid-cols-3 w-full h-full px-4 gap-8">
+			<div className="grid grid-cols-3 grid-rows-[repeat(4,150px)]  w-full h-full gap-6">
 				{Array.from({ length: 12 }).map((_, i) => (
 					<FlipWrap
 						onAnimationEnd={completeNavigation}
