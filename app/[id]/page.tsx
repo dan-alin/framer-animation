@@ -1,12 +1,13 @@
 'use client';
 
 import Card from '@/components/card';
+import Chip from '@/components/chip';
 import Dialog from '@/components/dialog';
-import { flipWrapStore } from '@/stores/current-card.store';
 import { cn } from '@/utils/cn';
+import { StarIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 export default function Detail() {
 	const [sectionThree, setSectionThree] = useState(false);
@@ -23,11 +24,6 @@ export default function Detail() {
 
 	const [x, setX] = useState(0);
 	const [y, setY] = useState(0);
-
-	useEffect(() => {
-		flipWrapStore.flippedId = -1;
-		flipWrapStore.triggered = false;
-	}, []);
 
 	const handleModal = (section: number) => {
 		switch (section) {
@@ -69,7 +65,7 @@ export default function Detail() {
 	return (
 		<motion.div
 			ref={gridRef}
-			className="grid grid-rows-[repeat(13,40px)] grid-cols-12 gap-4 items-center justify-items-center  h-full p-8 w-full"
+			className="grid grid-rows-[repeat(11,60px)] grid-cols-12 gap-3 items-center justify-items-center  h-full p-8 w-full"
 		>
 			<AnimatePresence>
 				{sectionTwoExpanded && !isAnimating && (
@@ -78,18 +74,28 @@ export default function Detail() {
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.5 }}
 						exit={{ opacity: 0 }}
-						className=" h-full w-full absolute bg-gray-900/30 z-5"
+						className=" min-h-screen w-screen absolute top-0 bg-gray-900/30 z-5"
 					></motion.div>
 				)}
 			</AnimatePresence>
-			<div className="col-span-12 row-span-1 text-2xl text-bold text-start w-full uppercase">
-				Card {pathname}
+			<div className=" col-span-12 row-span-1 text-2xl text-bold text-start flex flex-col gap-2 w-full uppercase items-center">
+				<div className="flex items-center gap-2 w-full">
+					<StarIcon className="fill-gray-300 stroke-none size-6" />
+					Card {pathname}
+					{Array.from({ length: 3 }).map((_, i) => (
+						<Chip key={i} />
+					))}
+				</div>
+				<div className="text-sm   text-gray-600 uppercase items-center flex gap-2 col-span-12 row-span-1 w-full">
+					<Chip isCategory /> • 21/11/2024
+				</div>
 			</div>
+
 			<motion.div
 				initial={{ opacity: 0, translateX: -100 }}
 				animate={{ opacity: 1, translateX: 0 }}
 				transition={{ duration: 0.5, delay: 0 }}
-				className=" h-full w-full col-span-3 row-span-8 "
+				className=" h-full w-full col-span-3 row-span-7 "
 			>
 				<Card title="section 1" />
 			</motion.div>
@@ -101,7 +107,7 @@ export default function Detail() {
 					opacity: 1,
 					translateX: sectionTwoExpanded ? x : 0,
 					translateY: y,
-					height: sectionTwoExpanded ? '85dvh' : '100%',
+					height: sectionTwoExpanded ? 'calc(100vh - 150px)' : '100%',
 					width: sectionTwoExpanded ? '97dvw' : '100%',
 					zIndex: sectionTwoExpanded ? 10 : 1
 				}}
@@ -114,7 +120,7 @@ export default function Detail() {
 					zIndex: { delay: 0.5 }
 				}}
 				className={cn(
-					' h-full w-full col-span-9 row-span-8 cursor-pointer',
+					' h-full w-full col-span-9 row-span-7 cursor-pointer',
 					isAnimating && 'pointer-events-none'
 				)}
 			>

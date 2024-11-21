@@ -53,7 +53,7 @@ const FlipWidget = ({ id, front, back, className }: MotionLineCardProps) => {
 		<motion.div
 			ref={cardRef}
 			className={cn(
-				'bg-white flex items-center justify-center rounded-lg shadow-lg h-full w-full transform-3d cursor-pointer ',
+				'bg-white flex items-center justify-center rounded-lg shadow-lg h-full w-full transform-3d cursor-pointer perspective-[1000px] ',
 				isAnimating && 'pointer-events-none',
 
 				className
@@ -86,7 +86,7 @@ const FlipWidget = ({ id, front, back, className }: MotionLineCardProps) => {
 				initial={{ opacity: 0 }}
 				animate={{ opacity: isCurrent ? 0 : 1 }}
 				transition={{ duration: 0.2, delay: 0.3 }}
-				className="absolute backface-hidden h-full w-full"
+				className="absolute backface-hidden h-full w-full backface-hidden-wk"
 				onClick={openCard}
 			>
 				{front}
@@ -97,7 +97,7 @@ const FlipWidget = ({ id, front, back, className }: MotionLineCardProps) => {
 				initial={{ opacity: 0 }}
 				animate={{ opacity: isCurrent ? 1 : 0 }}
 				transition={{ duration: 0.2, delay: 0.3 }}
-				className="absolute backface-hidden h-full w-full rotate-y-180"
+				className="absolute backface-hidden h-full w-full rotate-y-180 safari-flip"
 				onClick={closeCard}
 			>
 				{back}

@@ -5,6 +5,12 @@
 	--blue-az-dark: #005c8b;
 }
 
+@supports (-webkit-backface-visibility: hidden) {
+	.safari-flip {
+		transform: rotateY(180deg) rotateX(0deg); /* Enforce proper alignment */
+	}
+}
+
 @theme {
 	--color-primary: var(--blue-az);
 	--color-primary-dark: var(--blue-az-dark);

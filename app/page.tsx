@@ -6,7 +6,6 @@ import ScaleCard from '@/components/scale-card';
 
 import Search from '@/components/search';
 import { cardStore } from '@/stores/cards.store';
-import { flipWrapStore } from '@/stores/current-card.store';
 import { flipModalStore } from '@/stores/flipped-modal.store';
 import { searchStore } from '@/stores/search.store';
 import { SearchIcon } from 'lucide-react';
@@ -44,12 +43,6 @@ export default function Home() {
 
 	const handleSearchOpen = () => {
 		searchStore.open = !open;
-	};
-
-	const completeNavigation = () => {
-		flipWrapStore.isAnimating = false;
-
-		// flipWrapStore.triggered && navigate.push(`/${flipWrapStore.flippedId + 1}`);
 	};
 
 	useEffect(() => {
