@@ -2,45 +2,27 @@
 import { Button } from '@/components/button';
 import Dialog from '@/components/dialog';
 import Drawer from '@/components/drawer';
-import { default as FlipWrap } from '@/components/flip-wrap';
+import ScaleCard from '@/components/scale-card';
+
 import Search from '@/components/search';
 import { cardStore } from '@/stores/cards.store';
 import { flipWrapStore } from '@/stores/current-card.store';
 import { flipModalStore } from '@/stores/flipped-modal.store';
 import { searchStore } from '@/stores/search.store';
 import { SearchIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { AnimatePresence } from 'motion/react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
-
-type FrontCardProps = {
-	id: number;
-	desc: string;
-};
-
-const FrontCard = ({ id, desc }: FrontCardProps) => {
-	return (
-		<div className=" h-full w-full">
-			<h1 className=" bg-primary-dark text-white uppercase rounded-t-lg font-bold px-2 py-1 ">
-				Card {id + 1}
-			</h1>
-			<p className="text-sm p-2 text-gray-600">{desc}</p>
-		</div>
-	);
-};
 
 export default function Home() {
 	const [bottomOpen, setBottomOpen] = useState(false);
 	const [fadeOpen, setFadeOpen] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
-
+	const pathname = usePathname();
 	const { open, value } = useSnapshot(searchStore);
 
 	const { cards } = useSnapshot(cardStore);
-
-	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-		searchStore.value = e.target.value;
-	};
 
 	const navigate = useRouter();
 
@@ -67,16 +49,45 @@ export default function Home() {
 	const completeNavigation = () => {
 		flipWrapStore.isAnimating = false;
 
-		flipWrapStore.triggered && navigate.push(`/${flipWrapStore.flippedId + 1}`);
+		// flipWrapStore.triggered && navigate.push(`/${flipWrapStore.flippedId + 1}`);
 	};
 
+	useEffect(() => {
+		if (pathname === '/') {
+			function handleKeydown(event: KeyboardEvent) {
+				if (event.ctrlKey && event.key.toLowerCase() === 'k') {
+					console.log('Ctrl/Command + K detected');
+					event.preventDefault(); // Prevent default behavior (optional)
+					// Your custom logic here
+					searchStore.open = !searchStore.open;
+				}
+
+				if (event.key === 'Escape') {
+					searchStore.open = false;
+				}
+			}
+
+			window.addEventListener('keydown', handleKeydown);
+
+			return () => {
+				window.removeEventListener('keydown', handleKeydown);
+			};
+		}
+	}, [location.pathname]);
+
 	return (
-		<div className="flex flex-col items-center justify-items-center h-full p-8 gap-4  ">
-			<div className="flex gap-4  justify-between items-center w-full mt-12">
-				<SearchIcon
+		<div
+			className="flex flex-col items-center justify-items-center h-full py-24 gap-4 w-full max-w-[1300px] px-[14px]  "
+			id="main-page"
+		>
+			<div className="flex gap-4  justify-between items-center w-full ">
+				<kbd
 					onClick={handleSearchOpen}
-					className="text-gray-500 hover:text-primary-dark cursor-pointer"
-				/>
+					className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2 hover:text-gray-600 hover:bg-gray-300 cursor-pointer "
+				>
+					<SearchIcon className="  size-4" />
+					Ctrl + K
+				</kbd>
 
 				<div className="flex justify-end items-center gap-4">
 					<Button onClick={handleFadeClick} type="button">
@@ -91,17 +102,14 @@ export default function Home() {
 					</Button>
 				</div>
 			</div>
-			<div className="grid grid-cols-3 grid-rows-[repeat(auto,200px)]  w-full h-full gap-6">
-				{cards
-					.filter((card) => card.desc.toLowerCase().includes(value.toLowerCase()))
-					.map((card) => (
-						<FlipWrap
-							onAnimationEnd={completeNavigation}
-							key={card.id}
-							id={card.id}
-							front={<FrontCard desc={card.desc} id={card.id} />}
-						/>
-					))}
+			<div className="flex flex-wrap w-full h-full gap-6 ">
+				<AnimatePresence>
+					{cards
+						.filter((card) => card.desc.toLowerCase().includes(value.toLowerCase()))
+						.map((card) => (
+							<ScaleCard key={card.id} desc={card.desc} id={card.id} />
+						))}
+				</AnimatePresence>
 			</div>
 
 			<Dialog
@@ -122,7 +130,7 @@ export default function Home() {
 				title="Modal"
 			/>
 			<Drawer closeDrawer={handleDrawerClick} open={drawerOpen} />
-			<Search visible={open} handleSearch={handleSearch} />
+			<Search />
 		</div>
 	);
 }

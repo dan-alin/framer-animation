@@ -5,6 +5,7 @@ import Dialog from '@/components/dialog';
 import { flipWrapStore } from '@/stores/current-card.store';
 import { cn } from '@/utils/cn';
 import { AnimatePresence, motion } from 'motion/react';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Detail() {
@@ -14,6 +15,8 @@ export default function Detail() {
 
 	const [sectionTwoExpanded, setSectionTwoExpanded] = useState<boolean | undefined>();
 	const [isAnimating, setIsAnimating] = useState(false);
+
+	const pathname = usePathname().replace('/', '');
 
 	const sectionTwoRef = useRef<HTMLDivElement>(null);
 	const gridRef = useRef<HTMLDivElement>(null);
@@ -66,7 +69,7 @@ export default function Detail() {
 	return (
 		<motion.div
 			ref={gridRef}
-			className="grid grid-rows-[repeat(12,40px)] grid-cols-12 gap-4 items-center justify-items-center  h-full p-8   "
+			className="grid grid-rows-[repeat(13,40px)] grid-cols-12 gap-4 items-center justify-items-center  h-full p-8 w-full"
 		>
 			<AnimatePresence>
 				{sectionTwoExpanded && !isAnimating && (
@@ -79,9 +82,12 @@ export default function Detail() {
 					></motion.div>
 				)}
 			</AnimatePresence>
+			<div className="col-span-12 row-span-1 text-2xl text-bold text-start w-full uppercase">
+				Card {pathname}
+			</div>
 			<motion.div
-				initial={{ opacity: 0, translateY: -100 }}
-				animate={{ opacity: 1, translateY: 0 }}
+				initial={{ opacity: 0, translateX: -100 }}
+				animate={{ opacity: 1, translateX: 0 }}
 				transition={{ duration: 0.5, delay: 0 }}
 				className=" h-full w-full col-span-3 row-span-8 "
 			>

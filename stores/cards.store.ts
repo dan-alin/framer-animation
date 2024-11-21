@@ -9,15 +9,11 @@ type Card = {
 	desc: string;
 };
 
-//generate 3 different  description for the cards
-const descriptions = [
-	'This is a sample description for card  ',
-	'Here you can find information about card  ',
-	'There it is card  '
-];
+//generate 4 different  description for the cards
+const descriptions = ['Example ', 'Element ', 'Item ', 'Component '];
 
 //generate 12 cards
-const generatedCards: Card[] = Array.from({ length: 9 }, (_, i) => ({
+const generatedCards: Card[] = Array.from({ length: 12 }, (_, i) => ({
 	id: i,
 	desc: descriptions[Math.floor(Math.random() * descriptions.length)] + (i + 1)
 }));

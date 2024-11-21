@@ -11,7 +11,7 @@ type MotionLineCardProps = {
 	scale?: number;
 };
 
-const FlipWrap = ({ id, front, onAnimationEnd, scale = 7 }: MotionLineCardProps) => {
+const FlipWrap = ({ id, front, onAnimationEnd }: MotionLineCardProps) => {
 	const { flippedId, isAnimating } = useSnapshot(flipWrapStore);
 	const cardRef = useRef<HTMLDivElement>(null);
 	const [x, setX] = useState(0);
@@ -59,13 +59,13 @@ const FlipWrap = ({ id, front, onAnimationEnd, scale = 7 }: MotionLineCardProps)
 					translateX: x,
 					translateY: y,
 					zIndex: isCurrent ? 10 : 1,
-					scale: isCurrent ? scale : 1,
+					scale: 1,
 					opacity: 1,
 					backgroundColor: isCurrent ? '#f3f4f6' : 'white'
 				}}
 				transition={{
 					zIndex: isCurrent ? { delay: 0 } : { delay: 0.5 },
-					scale: isCurrent && { delay: 0.4, duration: 0.5 },
+					// scale: isCurrent && { delay: 0.4, duration: 0.5 },
 					translateY: isCurrent && { delay: 0, duration: 0.3 },
 					translateX: isCurrent && { delay: 0, duration: 0.3 },
 					backgroundColor: { duration: 0.5, delay: 0.5 }
@@ -83,6 +83,11 @@ const FlipWrap = ({ id, front, onAnimationEnd, scale = 7 }: MotionLineCardProps)
 				{/* FRONT */}
 				<div className="absolute  backface-hidden h-full w-full" onClick={openCard}>
 					{front}
+				</div>
+
+				{/* BACK */}
+				<div className="absolute  backface-hidden h-full w-full rotate-y-180">
+					<h1></h1>
 				</div>
 			</motion.div>
 		</AnimatePresence>

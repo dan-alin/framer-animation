@@ -38,7 +38,7 @@ export default function Widget() {
 
 	return (
 		<div
-			className={`grid grid-cols-3  grid-rows-[repeat(2,minmax(0,350px))] items-center justify-items-center max-h-[780px] h-full overflow-auto p-8 gap-4 `}
+			className={`grid grid-cols-3  grid-rows-[repeat(2,minmax(0,350px))] items-center justify-items-center max-h-[780px] h-full  p-8 gap-4 w-full overflow-hidden `}
 			id="widget-grid"
 		>
 			{(flippedId !== -1 || isAnimating) && (
@@ -49,7 +49,7 @@ export default function Widget() {
 					}}
 					exit={{ opacity: 0 }}
 					transition={{ opacity: { duration: 0.5 } }}
-					className="absolute top-0 left-0 w-full h-full bg-gray-900/30 flex items-center justify-center z-3"
+					className="absolute top-0 left-0 w-full h-full bg-gray-900/30 flex items-center justify-center z-3 "
 				></motion.div>
 			)}
 			<FlipWidget
