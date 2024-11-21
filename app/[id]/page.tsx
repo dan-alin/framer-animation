@@ -51,12 +51,15 @@ export default function Detail() {
 		setSectionTwoExpanded(sectionTwoExpanded ? false : true);
 
 		const { top, left, width, height } = card.getBoundingClientRect();
-		const { width: gridWidth, height: gridHeight } = grid.getBoundingClientRect();
+		// const { width: gridWidth, height: gridHeight } = grid.getBoundingClientRect();
 
-		const x = gridWidth / 2 - width / 2 - left;
+		// const x = gridWidth / 2 - width / 2 - left;
 
-		//center the card vertically
-		const y = gridHeight / 2 - height / 2 - top;
+		// //center the card vertically
+		// const y = gridHeight / 2 - height / 2 - top;
+
+		const x = window.innerWidth / 2 - width / 2 - left;
+		const y = window.innerHeight / 2 - height / 2 - top - 40;
 
 		setX(x);
 		setY(y);
@@ -109,8 +112,8 @@ export default function Detail() {
 				animate={{
 					opacity: 1,
 					translateX: sectionTwoExpanded ? x : 0,
-					translateY: y,
-					height: sectionTwoExpanded ? 'calc(100vh - 150px)' : '100%',
+					translateY: sectionTwoExpanded ? y : 0,
+					height: sectionTwoExpanded ? 'calc(100dvh - 100px)' : '100%',
 					width: sectionTwoExpanded ? '97dvw' : '100%',
 					zIndex: sectionTwoExpanded ? 10 : 1
 				}}
