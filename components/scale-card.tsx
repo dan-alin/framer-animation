@@ -7,9 +7,10 @@ import Chip from './chip';
 type ScaleCardProps = {
 	id: number;
 	desc: string;
+	title: string;
 };
 
-const ScaleCard = ({ id, desc }: ScaleCardProps) => {
+const ScaleCard = ({ id, desc, title }: ScaleCardProps) => {
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [x, setX] = useState(0);
 	const [y, setY] = useState(0);
@@ -93,7 +94,7 @@ const ScaleCard = ({ id, desc }: ScaleCardProps) => {
 							<StarIcon className="fill-gray-300 stroke-none size-6" />{' '}
 						</motion.span>
 					)}
-					Card {id + 1}
+					{title}
 					{isAnimating &&
 						Array.from({ length: 3 }).map((_, i) => (
 							<motion.div

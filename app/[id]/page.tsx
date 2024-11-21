@@ -91,6 +91,7 @@ export default function Detail() {
 				</div>
 			</div>
 
+			{/* SECTION 1 */}
 			<motion.div
 				initial={{ opacity: 0, translateX: -100 }}
 				animate={{ opacity: 1, translateX: 0 }}
@@ -99,6 +100,8 @@ export default function Detail() {
 			>
 				<Card title="section 1" />
 			</motion.div>
+
+			{/* SECTION 2 */}
 			<motion.div
 				ref={sectionTwoRef}
 				onClick={handleExpand}
@@ -128,6 +131,8 @@ export default function Detail() {
 					<p className="text-sm text-gray-500">Click this card to expand/shrink </p>
 				</Card>
 			</motion.div>
+
+			{/* SECTION 3 */}
 			<motion.div
 				initial={{ opacity: 0, translateY: 100 }}
 				animate={{ opacity: 1, translateY: 0 }}
@@ -139,6 +144,8 @@ export default function Detail() {
 					<p className="text-sm text-gray-500">Click this card to open the detail</p>
 				</Card>
 			</motion.div>
+
+			{/* SECTION 4 */}
 			<motion.div
 				initial={{ opacity: 0, translateY: 100 }}
 				animate={{ opacity: 1, translateY: 0 }}
@@ -150,6 +157,8 @@ export default function Detail() {
 					<p className="text-sm text-gray-500">Click this card to open the detail</p>
 				</Card>
 			</motion.div>
+
+			{/* SECTION 5 */}
 			<motion.div
 				initial={{ opacity: 0, translateY: 100 }}
 				animate={{ opacity: 1, translateY: 0 }}
@@ -162,6 +171,7 @@ export default function Detail() {
 				</Card>
 			</motion.div>
 
+			{/* DIALOGS */}
 			<Dialog
 				bottom
 				isFull

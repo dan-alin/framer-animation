@@ -12,7 +12,7 @@ const Drawer: FC<DrawerProps> = ({ open, closeDrawer }) => {
 	return (
 		<div
 			className={clsx(
-				'bg-white border border-gray-500/20 rounded absolute h-3/4 right-0 top-32 z-50 w-[400px] shadow-lg transform-transition duration-300 flex flex-col justify-between p-4',
+				'bg-white fixed border border-gray-500/20 rounded  h-3/4 right-0 top-32 z-50 w-[400px] shadow-lg transform-transition duration-300 flex flex-col justify-between p-4',
 				open ? 'translate-x-0' : 'translate-x-[100%]'
 			)}
 		>

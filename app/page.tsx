@@ -98,9 +98,14 @@ export default function Home() {
 			<div className="flex flex-wrap w-full h-full gap-6 ">
 				<AnimatePresence>
 					{cards
-						.filter((card) => card.desc.toLowerCase().includes(value.toLowerCase()))
+						.filter((card) => {
+							return (
+								card.desc.toLowerCase().includes(value.toLowerCase()) ||
+								card.title.toLowerCase().includes(value.toLowerCase())
+							);
+						})
 						.map((card) => (
-							<ScaleCard key={card.id} desc={card.desc} id={card.id} />
+							<ScaleCard key={card.id} desc={card.desc} id={card.id} title={card.title} />
 						))}
 				</AnimatePresence>
 			</div>

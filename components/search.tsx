@@ -31,11 +31,19 @@ const Search = () => {
 						defaultValue={searchStore.value}
 						ref={inputRef}
 					/>
-					<kbd className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2  absolute right-20 top-4">
+					<kbd
+						onClick={() => (searchStore.open = false)}
+						className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2  absolute right-20 top-4"
+					>
 						Esc
 					</kbd>
 
-					<kbd className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2  absolute right-4 top-4">
+					<kbd
+						onClick={() => {
+							searchStore.value = inputRef.current?.value ?? '';
+						}}
+						className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2  absolute right-4 top-4"
+					>
 						Enter
 					</kbd>
 				</motion.div>

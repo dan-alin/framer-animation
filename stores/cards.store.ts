@@ -6,6 +6,7 @@ type CardStore = {
 
 type Card = {
 	id: number;
+	title: string;
 	desc: string;
 };
 
@@ -15,6 +16,7 @@ const descriptions = ['Example ', 'Element ', 'Item ', 'Component '];
 //generate 12 cards
 const generatedCards: Card[] = Array.from({ length: 12 }, (_, i) => ({
 	id: i,
+	title: 'Card ' + (i + 1),
 	desc: descriptions[Math.floor(Math.random() * descriptions.length)] + (i + 1)
 }));
 
