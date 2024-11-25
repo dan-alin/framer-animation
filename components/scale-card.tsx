@@ -8,9 +8,10 @@ type ScaleCardProps = {
 	id: number;
 	desc: string;
 	title: string;
+	progressive?: boolean;
 };
 
-const ScaleCard = ({ id, desc, title }: ScaleCardProps) => {
+const ScaleCard = ({ id, desc, title, progressive = false }: ScaleCardProps) => {
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [x, setX] = useState(0);
 	const [y, setY] = useState(0);
@@ -40,12 +41,17 @@ const ScaleCard = ({ id, desc, title }: ScaleCardProps) => {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0 }}
+			initial={{ opacity: 0, scale: 0.8 }}
 			animate={{
-				opacity: 1
+				opacity: 1,
+				scale: 1
 			}}
-			exit={{ opacity: 0 }}
-			transition={{ duration: 0.5 }}
+			exit={{ opacity: 0, scale: 0.8 }}
+			transition={{
+				duration: 0.5,
+				scale: { delay: progressive ? 0.1 * id : 0 },
+				opacity: { delay: progressive ? 0.1 * id : 0 }
+			}}
 			className=" h-32   w-[calc((100%-48px)*0.33)] "
 		>
 			<motion.div

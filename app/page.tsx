@@ -18,6 +18,8 @@ export default function Home() {
 	const [bottomOpen, setBottomOpen] = useState(false);
 	const [fadeOpen, setFadeOpen] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
+	const [progressive, setProgressive] = useState(false);
+
 	const pathname = usePathname();
 	const { open, value } = useSnapshot(searchStore);
 
@@ -43,6 +45,10 @@ export default function Home() {
 
 	const handleSearchOpen = () => {
 		searchStore.open = !open;
+	};
+
+	const handleProgressiveClick = () => {
+		setProgressive(!progressive);
 	};
 
 	useEffect(() => {
@@ -74,13 +80,25 @@ export default function Home() {
 			id="main-page"
 		>
 			<div className="flex gap-4  justify-between items-center w-full ">
-				<kbd
-					onClick={handleSearchOpen}
-					className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2 hover:text-gray-600 hover:bg-gray-300 cursor-pointer "
-				>
-					<SearchIcon className="  size-4" />
-					Ctrl + K
-				</kbd>
+				<div className="flex items-center gap-6">
+					<kbd
+						onClick={handleSearchOpen}
+						className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2 hover:text-gray-600 hover:bg-gray-300 cursor-pointer "
+					>
+						<SearchIcon className="  size-4" />
+						Ctrl + K
+					</kbd>
+
+					<div className=" uppercase text-gray-400 flex items-center justify-center gap-1 font-bold">
+						<input
+							type="checkbox"
+							id="progressive"
+							className="size-4 cursor-pointer"
+							onChange={handleProgressiveClick}
+						></input>
+						<label htmlFor="progressive">Progressive Animation</label>
+					</div>
+				</div>
 
 				<div className="flex justify-end items-center gap-4">
 					<Button onClick={handleFadeClick} type="button">
@@ -95,7 +113,7 @@ export default function Home() {
 					</Button>
 				</div>
 			</div>
-			<div className="flex flex-wrap w-full h-full gap-6 ">
+			<div className="flex flex-wrap w-full h-full gap-6 " key={progressive.toString()}>
 				<AnimatePresence>
 					{cards
 						.filter((card) => {
@@ -105,7 +123,13 @@ export default function Home() {
 							);
 						})
 						.map((card) => (
-							<ScaleCard key={card.id} desc={card.desc} id={card.id} title={card.title} />
+							<ScaleCard
+								key={card.id}
+								desc={card.desc}
+								id={card.id}
+								title={card.title}
+								progressive={progressive}
+							/>
 						))}
 				</AnimatePresence>
 			</div>
