@@ -72,7 +72,7 @@ export default function Home() {
 				window.removeEventListener('keydown', handleKeydown);
 			};
 		}
-	}, [location.pathname]);
+	}, [pathname]);
 
 	return (
 		<div
