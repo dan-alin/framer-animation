@@ -1,3 +1,4 @@
+'use client';
 import { flipModalStore } from '@/stores/flipped-modal.store';
 import { cn } from '@/utils/cn';
 import { motion } from 'motion/react';

@@ -59,7 +59,7 @@ export default function Detail() {
 		// const y = gridHeight / 2 - height / 2 - top;
 
 		const x = window.innerWidth / 2 - width / 2 - left;
-		const y = window.innerHeight / 2 - height / 2 - top - 40;
+		const y = window.innerHeight / 2 - height / 2 - top - 35;
 
 		setX(x);
 		setY(y);
@@ -113,8 +113,8 @@ export default function Detail() {
 					opacity: 1,
 					translateX: sectionTwoExpanded ? x : 0,
 					translateY: sectionTwoExpanded ? y : 0,
-					height: sectionTwoExpanded ? 'calc(100dvh - 100px)' : '100%',
-					width: sectionTwoExpanded ? '97dvw' : '100%',
+					height: sectionTwoExpanded ? 'calc(100dvh - 80px)' : '100%',
+					width: sectionTwoExpanded ? '99dvw' : '100%',
 					zIndex: sectionTwoExpanded ? 10 : 1
 				}}
 				onAnimationComplete={() => {

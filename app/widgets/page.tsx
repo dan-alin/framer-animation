@@ -1,19 +1,31 @@
 'use client';
 
 import FlipWidget from '@/components/flip-widget';
+import LineMock from '@/components/line-mock';
 import { flipModalStore } from '@/stores/flipped-modal.store';
 import { motion } from 'motion/react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSnapshot } from 'valtio';
 
 type WidgetProps = {
 	id: number;
 };
+
 const FrontWidget = ({ id }: WidgetProps) => {
+	const lines = useMemo(() => {
+		return Array.from({ length: 7 }).map((_, i) => ({
+			name: `Line ${i + 1}`,
+			percentage: Math.floor(Math.random() * 100)
+		}));
+	}, []);
 	return (
-		<div className=" h-full w-full">
+		<div className=" h-full w-full flex flex-col gap-2 ">
 			<h1 className="   uppercase rounded-t-lg font-bold px-2 py-1 ">widget {id}</h1>
-			<p className="text-sm p-2 text-gray-600">Click the widget to flip it</p>
+			<div className="flex flex-col  gap-2">
+				{lines.map((line, i) => (
+					<LineMock key={i} name={line.name} percentage={line.percentage} />
+				))}
+			</div>
 		</div>
 	);
 };

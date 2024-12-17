@@ -44,7 +44,7 @@ const Dialog: FC<DialogProps> = ({
 						transition={{ duration: 0.5 }}
 						className={cn(
 							'bg-white rounded-lg p-8 shadow-lg z-50  flex flex-col gap-4 min-w-[400px]',
-							isFull && 'h-[88dvh] w-[95dvw] mb-20'
+							isFull && 'h-[93dvh] w-[99dvw] mb-16'
 						)}
 					>
 						<div className="font-bold uppercase flex items-center justify-between">
