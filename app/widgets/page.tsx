@@ -2,9 +2,10 @@
 
 import FlipWidget from '@/components/flip-widget';
 import LineMock from '@/components/line-mock';
+import { cardStore } from '@/stores/cards.store';
 import { flipModalStore } from '@/stores/flipped-modal.store';
 import { motion } from 'motion/react';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useSnapshot } from 'valtio';
 
 type WidgetProps = {
@@ -12,19 +13,16 @@ type WidgetProps = {
 };
 
 const FrontWidget = ({ id }: WidgetProps) => {
-	const lines = useMemo(() => {
-		return Array.from({ length: 7 }).map((_, i) => ({
-			name: `Line ${i + 1}`,
-			percentage: Math.floor(Math.random() * 100)
-		}));
-	}, []);
+	const { cards } = useSnapshot(cardStore);
 	return (
 		<div className=" h-full w-full flex flex-col gap-2 ">
 			<h1 className="   uppercase rounded-t-lg font-bold px-2 py-1 ">widget {id}</h1>
-			<div className="flex flex-col  gap-2">
-				{lines.map((line, i) => (
-					<LineMock key={i} name={line.name} percentage={line.percentage} />
-				))}
+			<div className="flex flex-col overflow-auto pb-2 gap-2">
+				{cards
+					.filter((line) => line.id <= 5)
+					.map((line) => (
+						<LineMock id={line.id} key={line.id} name={line.desc} percentage={line.percentage} />
+					))}
 			</div>
 		</div>
 	);

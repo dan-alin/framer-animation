@@ -15,25 +15,17 @@ import { useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
 export default function Home() {
-	const [bottomOpen, setBottomOpen] = useState(false);
 	const [fadeOpen, setFadeOpen] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
-	const [progressive, setProgressive] = useState(false);
 
 	const pathname = usePathname();
-	const { open, value } = useSnapshot(searchStore);
+	const { open } = useSnapshot(searchStore);
 
-	const { cards } = useSnapshot(cardStore);
-
-	const navigate = useRouter();
+	const { cards, progressiveAnimation } = useSnapshot(cardStore);
 
 	useEffect(() => {
 		flipModalStore.flippedId = -1;
 	}, []);
-
-	const handleBottomClick = () => {
-		setBottomOpen(!bottomOpen);
-	};
 
 	const handleFadeClick = () => {
 		setFadeOpen(!fadeOpen);
@@ -48,7 +40,7 @@ export default function Home() {
 	};
 
 	const handleProgressiveClick = () => {
-		setProgressive(!progressive);
+		cardStore.progressiveAnimation = !progressiveAnimation;
 	};
 
 	useEffect(() => {
@@ -104,45 +96,29 @@ export default function Home() {
 					<Button onClick={handleFadeClick} type="button">
 						Fade
 					</Button>
-					<Button onClick={handleBottomClick} type="button">
-						Bottom
-					</Button>
 
 					<Button onClick={handleDrawerClick} type="button">
-						Drawer
+						Config
 					</Button>
 				</div>
 			</div>
-			<div className="flex flex-wrap w-full h-full gap-6 " key={progressive.toString()}>
+			<div className="flex flex-wrap w-full h-full gap-6 " key={progressiveAnimation.toString()}>
 				<AnimatePresence>
-					{cards
-						.filter((card) => {
-							return (
-								card.desc.toLowerCase().includes(value.toLowerCase()) ||
-								card.title.toLowerCase().includes(value.toLowerCase())
-							);
-						})
-						.map((card) => (
-							<ScaleCard
-								key={card.id}
-								desc={card.desc}
-								id={card.id}
-								title={card.title}
-								progressive={progressive}
-							/>
-						))}
+					{cards.map((card) => (
+						<ScaleCard
+							performance={card.performance}
+							volatility={card.volatility}
+							risk={card.risk}
+							key={card.id}
+							desc={card.desc}
+							id={card.id}
+							title={card.title}
+							progressive={progressiveAnimation}
+						/>
+					))}
 				</AnimatePresence>
 			</div>
 
-			<Dialog
-				showFooter
-				bottom
-				onCancel={handleBottomClick}
-				onConfirm={handleBottomClick}
-				body="Bottom modal example"
-				open={bottomOpen}
-				title="Modal"
-			/>
 			<Dialog
 				showFooter
 				onCancel={handleFadeClick}

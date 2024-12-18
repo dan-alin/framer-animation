@@ -4,17 +4,33 @@ import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import Chip from './chip';
+import { useSnapshot } from 'valtio';
+import { configStore } from '@/stores/config.store';
 type ScaleCardProps = {
 	id: number;
 	desc: string;
 	title: string;
+	performance?: number;
+	volatility?: number;
+	risk?: number;
 	progressive?: boolean;
+	search?: boolean;
 };
 
-const ScaleCard = ({ id, desc, title, progressive = false }: ScaleCardProps) => {
+const ScaleCard = ({
+	id,
+	desc,
+	title,
+	performance,
+	volatility,
+	risk,
+	progressive = false,
+	search = false
+}: ScaleCardProps) => {
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [x, setX] = useState(0);
 	const [y, setY] = useState(0);
+	const { showVolatility, showPerformance } = useSnapshot(configStore);
 
 	const cardRef = useRef<HTMLDivElement>(null);
 
@@ -23,6 +39,9 @@ const ScaleCard = ({ id, desc, title, progressive = false }: ScaleCardProps) => 
 	const handleExpand = () => {
 		const card = cardRef.current;
 		if (!card) return;
+
+		card.blur();
+
 		setIsAnimating(true);
 
 		const { top, left } = card.getBoundingClientRect();
@@ -52,7 +71,7 @@ const ScaleCard = ({ id, desc, title, progressive = false }: ScaleCardProps) => 
 				scale: { delay: progressive ? 0.1 * id : 0 },
 				opacity: { delay: progressive ? 0.1 * id : 0 }
 			}}
-			className=" h-32   w-[calc((100%-48px)*0.33)] "
+			className={cn(' h-32   w-[calc((100%-48px)*0.33)]  ', search && 'w-full')}
 		>
 			<motion.div
 				ref={cardRef}
@@ -70,24 +89,33 @@ const ScaleCard = ({ id, desc, title, progressive = false }: ScaleCardProps) => 
 					translateY: { duration: isAnimating ? 0.5 : 0 }
 				}}
 				onClick={handleExpand}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter') {
+						handleExpand();
+					}
+				}}
+				tabIndex={0}
 				className={cn(
-					'rounded-lg flex flex-col bg-white shadow-xl cursor-pointer h-full w-full ',
+					'rounded-lg flex flex-col bg-white shadow-xl cursor-pointer h-full w-full focus:scale-105 focus:duration-200 focus:outline-none ',
 					isAnimating && 'pointer-events-none bg-gray-100 transition-colors duration-500 '
 				)}
 				onAnimationComplete={handleAnimatioonEnd}
 			>
 				{!isAnimating && (
 					<motion.h1
-						className={cn(' uppercase rounded-t-lg  px-2 py-1 text-white bg-primary-dark ')}
+						className={cn(
+							' uppercase rounded-t-lg w-full flex items-center justify-between  px-2 py-1 text-white bg-primary-dark '
+						)}
 					>
 						{desc}
+						<span className="text-xs text-gray-200">{title}</span>
 					</motion.h1>
 				)}
 
 				<motion.div
 					transition={{ duration: 0.7, delay: 0 }}
 					className={cn(
-						'text-sm p-2 text-gray-600 uppercase items-center flex gap-2',
+						'text-sm p-2 text-gray-600 uppercase items-end h-full flex gap-4',
 						isAnimating && 'text-2xl px-8 pt-8 pb-2  text-black'
 					)}
 				>
@@ -97,10 +125,18 @@ const ScaleCard = ({ id, desc, title, progressive = false }: ScaleCardProps) => 
 							animate={{ opacity: 1 }}
 							transition={{ duration: 0.7 }}
 						>
-							<StarIcon className="fill-gray-300 stroke-none size-6" />{' '}
+							<StarIcon className="fill-gray-300 stroke-none size-6 " />
 						</motion.span>
 					)}
-					{title}
+					<div className="flex flex-col   ">
+						{showPerformance && <p>perf. {performance}%</p>}
+						{showVolatility && (
+							<div className="flex flex-row gap-4">
+								<p>vola. {volatility}% </p>
+								<p>risk. {risk}%</p>
+							</div>
+						)}
+					</div>
 					{isAnimating &&
 						Array.from({ length: 3 }).map((_, i) => (
 							<motion.div

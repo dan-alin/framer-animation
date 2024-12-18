@@ -81,12 +81,18 @@ const FlipWidget = ({ id, front, back, className }: MotionLineCardProps) => {
 			onAnimationComplete={() => {
 				flipModalStore.isAnimating = false;
 			}}
+			onWheel={(e) => {
+				e.stopPropagation();
+			}}
 		>
 			{/* FRONT */}
 			<motion.div
 				initial={{ opacity: 0 }}
 				animate={{ opacity: isCurrent ? 0 : 1 }}
 				transition={{ duration: 0.2, delay: 0.3 }}
+				onWheel={(e) => {
+					e.stopPropagation();
+				}}
 				className="absolute backface-hidden h-full w-full backface-hidden-wk"
 				onClick={openCard}
 			>

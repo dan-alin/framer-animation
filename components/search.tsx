@@ -1,11 +1,14 @@
 'use client';
+import { cardStore } from '@/stores/cards.store';
 import { searchStore } from '@/stores/search.store';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRef } from 'react';
 import { useSnapshot } from 'valtio';
+import ScaleCard from './scale-card';
 
 const Search = () => {
-	const { open } = useSnapshot(searchStore);
+	const { open, value } = useSnapshot(searchStore);
+	const { cards, progressiveAnimation } = useSnapshot(cardStore);
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -16,16 +19,14 @@ const Search = () => {
 					initial={{ opacity: 0, translateY: -100 }}
 					animate={{ opacity: 1, translateY: 0 }}
 					exit={{ opacity: 0, translateY: -100 }}
-					className="absolute top-0 bg-white rounded-md mx-auto mt-2 w-[95vw] h-16 shadow-xl items-center justify-center p-2 z-5 border border-gray-100 "
+					className="absolute top-0 bg-white rounded-md mx-auto mt-2 w-[95vw] h-2/3 shadow-2xl items-center justify-center py-2 px-4  z-5 border border-gray-200 "
 				>
 					<motion.input
-						onKeyDown={(e) => {
-							if (e.key === 'Enter') {
-								searchStore.value = inputRef.current?.value ?? '';
-							}
+						onChange={() => {
+							searchStore.value = inputRef.current?.value ?? '';
 						}}
 						autoFocus
-						className="h-full w-full bg-gray-400/10 rounded-md outline-none p-2 "
+						className="h-12 w-full bg-gray-400/10 rounded-md outline-none p-2 focus:ring-2 focus:ring-gray-400/30"
 						type="text"
 						placeholder="Search..."
 						defaultValue={searchStore.value}
@@ -33,19 +34,33 @@ const Search = () => {
 					/>
 					<kbd
 						onClick={() => (searchStore.open = false)}
-						className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2  absolute right-20 top-4"
+						className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2  absolute right-5 top-4"
 					>
 						Esc
 					</kbd>
 
-					<kbd
-						onClick={() => {
-							searchStore.value = inputRef.current?.value ?? '';
-						}}
-						className="text-gray-500 font-bold uppercase border border-gray-100 bg-gray-300 text-xs py-2 p-2 rounded-lg flex items-center gap-2  absolute right-4 top-4"
-					>
-						Enter
-					</kbd>
+					<div className="grid grid-cols-3 gap-4 mt-10">
+						<AnimatePresence>
+							{value.length >= 3 &&
+								cards
+									.filter((card) => {
+										return (
+											card.desc.toLowerCase().includes(value.toLowerCase()) ||
+											card.title.toLowerCase().includes(value.toLowerCase())
+										);
+									})
+									.map((card) => (
+										<ScaleCard
+											key={card.id}
+											id={card.id}
+											title={card.title}
+											desc={card.desc}
+											search
+											progressive={progressiveAnimation}
+										></ScaleCard>
+									))}
+						</AnimatePresence>
+					</div>
 				</motion.div>
 			)}
 		</AnimatePresence>
