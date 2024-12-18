@@ -45,7 +45,7 @@ const FlipWidget = ({ id, front, back, className }: MotionLineCardProps) => {
 
 		if (!widgetGrid) return;
 		const x = widgetGrid.clientWidth / 2 - width / 2 - left;
-		const y = widgetGrid.clientHeight / 2 - height / 2 - top;
+		const y = widgetGrid.clientHeight / 2 - height / 2 - top - 165;
 
 		setX(x);
 		setY(y);

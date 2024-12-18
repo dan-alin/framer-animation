@@ -16,7 +16,7 @@ const FrontWidget = ({ id }: WidgetProps) => {
 	const { cards } = useSnapshot(cardStore);
 	return (
 		<div className=" h-full w-full flex flex-col gap-2 ">
-			<h1 className="   uppercase rounded-t-lg font-bold px-2 py-1 ">widget {id}</h1>
+			<h1 className="uppercase rounded-t-lg font-bold px-2 py-1">widget {id}</h1>
 			<div className="flex flex-col overflow-auto pb-2 gap-2">
 				{cards
 					.filter((line) => line.id <= 5)
@@ -48,7 +48,7 @@ export default function Widget() {
 
 	return (
 		<div
-			className={`grid grid-cols-3  grid-rows-[repeat(2,minmax(0,350px))] items-center justify-items-center h-full p-8 gap-4 w-full overflow-hidden `}
+			className={`grid grid-cols-3 grid-rows-[repeat(2,minmax(0,350px))] items-center justify-items-center h-full p-8 gap-4 w-full overflow-hidden `}
 			id="widget-grid"
 		>
 			{(flippedId !== -1 || isAnimating) && (
