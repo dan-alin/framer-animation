@@ -21,7 +21,7 @@ const FrontWidget = ({ id }: WidgetProps) => {
 				{cards
 					.filter((line) => line.id <= 5)
 					.map((line) => (
-						<LineMock id={line.id} key={line.id} name={line.desc} percentage={line.percentage} />
+						<LineMock id={line.id} key={line.id} name={line.desc} percentage={line.performance} />
 					))}
 			</div>
 		</div>
@@ -48,7 +48,7 @@ export default function Widget() {
 
 	return (
 		<div
-			className={`grid grid-cols-3  grid-rows-[repeat(2,minmax(0,350px))] items-center justify-items-center max-h-[780px] h-full  p-8 gap-4 w-full overflow-hidden `}
+			className={`grid grid-cols-3  grid-rows-[repeat(2,minmax(0,350px))] items-center justify-items-center h-full p-8 gap-4 w-full overflow-hidden `}
 			id="widget-grid"
 		>
 			{(flippedId !== -1 || isAnimating) && (

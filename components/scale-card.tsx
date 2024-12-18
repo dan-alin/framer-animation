@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { StarIcon } from 'lucide-react';
+import { StarIcon, EllipsisVerticalIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -14,7 +14,7 @@ type ScaleCardProps = {
 	volatility?: number;
 	risk?: number;
 	progressive?: boolean;
-	search?: boolean;
+	tipology?: string;
 };
 
 const ScaleCard = ({
@@ -24,13 +24,13 @@ const ScaleCard = ({
 	performance,
 	volatility,
 	risk,
-	progressive = false,
-	search = false
+	tipology,
+	progressive = false
 }: ScaleCardProps) => {
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [x, setX] = useState(0);
 	const [y, setY] = useState(0);
-	const { showVolatility, showPerformance } = useSnapshot(configStore);
+	const { showVolatility, showPerformance, showTipology } = useSnapshot(configStore);
 
 	const cardRef = useRef<HTMLDivElement>(null);
 
@@ -71,7 +71,7 @@ const ScaleCard = ({
 				scale: { delay: progressive ? 0.1 * id : 0 },
 				opacity: { delay: progressive ? 0.1 * id : 0 }
 			}}
-			className={cn(' h-32   w-[calc((100%-48px)*0.33)]  ', search && 'w-full')}
+			className={cn('min-h-20  w-full ')}
 		>
 			<motion.div
 				ref={cardRef}
@@ -107,8 +107,7 @@ const ScaleCard = ({
 							' uppercase rounded-t-lg w-full flex items-center justify-between  px-2 py-1 text-white bg-primary-dark '
 						)}
 					>
-						{desc}
-						<span className="text-xs text-gray-200">{title}</span>
+						{title}
 					</motion.h1>
 				)}
 
@@ -128,15 +127,36 @@ const ScaleCard = ({
 							<StarIcon className="fill-gray-300 stroke-none size-6 " />
 						</motion.span>
 					)}
-					<div className="flex flex-col   ">
-						{showPerformance && <p>perf. {performance}%</p>}
-						{showVolatility && (
-							<div className="flex flex-row gap-4">
-								<p>vola. {volatility}% </p>
-								<p>risk. {risk}%</p>
-							</div>
+
+					<div className="flex flex-col w-full   ">
+						{!isAnimating && (
+							<>
+								<span className="mb-1">{desc}</span>
+								{showTipology && <p className="text-xs">{tipology}</p>}
+								{showPerformance && (
+									<p className="text-xs">
+										perf. <span className="font-semibold">{performance}%</span>
+									</p>
+								)}
+								{showVolatility && (
+									<div className="flex flex-row gap-4 text-xs">
+										<p>
+											vola. <span className="font-semibold">{volatility}%</span>
+										</p>
+										<p>
+											risk. <span className="font-semibold">{risk}%</span>
+										</p>
+									</div>
+								)}
+
+								<div className="flex flex-row mt-2 items-center justify-between   ">
+									<StarIcon className="fill-gray-300 stroke-none size-6" />
+									<EllipsisVerticalIcon className="fill-gray-400 stroke-gray-400 size-4" />
+								</div>
+							</>
 						)}
 					</div>
+
 					{isAnimating &&
 						Array.from({ length: 3 }).map((_, i) => (
 							<motion.div
@@ -155,7 +175,7 @@ const ScaleCard = ({
 						initial={{ opacity: 0, translateX: -50 }}
 						animate={{ opacity: 1, translateX: 0 }}
 						transition={{ duration: 0.5, delay: 0 }}
-						className={cn('text-sm px-8   text-gray-600 uppercase items-center flex gap-2 ')}
+						className={cn('text-sm px-8 text-gray-600 uppercase items-center flex gap-2 ')}
 					>
 						<Chip isCategory /> • 21/11/2024
 					</motion.div>

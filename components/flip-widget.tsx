@@ -54,9 +54,8 @@ const FlipWidget = ({ id, front, back, className }: MotionLineCardProps) => {
 		<motion.div
 			ref={cardRef}
 			className={cn(
-				'bg-white flex items-center justify-center rounded-lg shadow-lg h-full w-full transform-3d cursor-pointer perspective-[1000px] ',
+				'bg-white flex items-center justify-center rounded-lg shadow-lg h-full w-full transform-3d cursor-pointer perspective-[1000px]',
 				isAnimating && 'pointer-events-none',
-
 				className
 			)}
 			initial={{

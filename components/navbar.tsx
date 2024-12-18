@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Navbar = () => {
 	return (
-		<nav className="bg-white fixed bottom-0  shadow-2xl border border-gray-100 text-gray-500 p-4 h-16 z-50 flex w-full items-center justify-center gap-10 uppercase ">
+		<nav className="bg-white   shadow-2xl border border-gray-100 text-gray-500 p-4 h-16 z-50 flex w-full items-center justify-center gap-10 uppercase ">
 			<Link className="hover:text-primary-dark" href={'/'}>
 				card
 			</Link>

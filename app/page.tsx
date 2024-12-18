@@ -10,7 +10,7 @@ import { flipModalStore } from '@/stores/flipped-modal.store';
 import { searchStore } from '@/stores/search.store';
 import { SearchIcon } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -68,7 +68,7 @@ export default function Home() {
 
 	return (
 		<div
-			className="flex flex-col items-center justify-items-center h-full py-24 gap-4 w-full max-w-[1300px] px-[14px]  "
+			className="flex flex-col items-center justify-items-center h-full pt-24 gap-4 w-full max-w-[2160px] px-8  "
 			id="main-page"
 		>
 			<div className="flex gap-4  justify-between items-center w-full ">
@@ -102,21 +102,28 @@ export default function Home() {
 					</Button>
 				</div>
 			</div>
-			<div className="flex flex-wrap w-full h-full gap-6 " key={progressiveAnimation.toString()}>
-				<AnimatePresence>
-					{cards.map((card) => (
-						<ScaleCard
-							performance={card.performance}
-							volatility={card.volatility}
-							risk={card.risk}
-							key={card.id}
-							desc={card.desc}
-							id={card.id}
-							title={card.title}
-							progressive={progressiveAnimation}
-						/>
-					))}
-				</AnimatePresence>
+
+			<div className="relative h-full w-full overflo-auto overflow-x-hidden">
+				<div
+					className="relative grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))]  w-full  overflow-y-auto overflow-x-hidden gap-4 pb-8 "
+					key={progressiveAnimation.toString()}
+				>
+					<AnimatePresence>
+						{cards.map((card) => (
+							<ScaleCard
+								performance={card.performance}
+								volatility={card.volatility}
+								risk={card.risk}
+								tipology={card.tipology}
+								key={card.id}
+								desc={card.desc}
+								id={card.id}
+								title={card.title}
+								progressive={progressiveAnimation}
+							/>
+						))}
+					</AnimatePresence>
+				</div>
 			</div>
 
 			<Dialog

@@ -68,7 +68,7 @@ export default function Detail() {
 	return (
 		<motion.div
 			ref={gridRef}
-			className="grid grid-rows-[repeat(11,60px)] grid-cols-12 gap-3 items-center justify-items-center  h-full p-8 w-full"
+			className="grid grid-rows-[repeat(11,60px)] grid-cols-12 gap-3 items-center justify-items-center  h-[calc(100vh-64px)] p-8 w-full"
 		>
 			<AnimatePresence>
 				{sectionTwoExpanded && !isAnimating && (

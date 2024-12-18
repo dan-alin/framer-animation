@@ -19,7 +19,7 @@ const Search = () => {
 					initial={{ opacity: 0, translateY: -100 }}
 					animate={{ opacity: 1, translateY: 0 }}
 					exit={{ opacity: 0, translateY: -100 }}
-					className="absolute top-0 bg-white rounded-md mx-auto mt-2 w-[95vw] h-2/3 shadow-2xl items-center justify-center py-2 px-4  z-5 border border-gray-200 "
+					className="absolute  top-0 bg-white rounded-md mx-auto mt-2 w-[95vw] h-2/3  shadow-2xl items-center justify-center py-2 px-4  z-5 border border-gray-200 "
 				>
 					<motion.input
 						onChange={() => {
@@ -39,7 +39,7 @@ const Search = () => {
 						Esc
 					</kbd>
 
-					<div className="grid grid-cols-3 gap-4 mt-10">
+					<div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))]  gap-4 mt-10 max-h-[89%] overflow-x-hidden overflow-y-auto pb-8">
 						<AnimatePresence>
 							{value.length >= 3 &&
 								cards
@@ -55,11 +55,14 @@ const Search = () => {
 											id={card.id}
 											title={card.title}
 											desc={card.desc}
-											search
+											performance={card.performance}
+											volatility={card.volatility}
+											risk={card.risk}
 											progressive={progressiveAnimation}
 										></ScaleCard>
 									))}
 						</AnimatePresence>
+						<div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-white left-0 to-transparent" />
 					</div>
 				</motion.div>
 			)}

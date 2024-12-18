@@ -27,9 +27,11 @@ const typologies = [
 	'Derivatives'
 ];
 
-const generatedCards: Card[] = Array.from({ length: 12 }, (_, i) => ({
+const families = ['Family 1', 'Family 2', 'Family 3', 'Family 4'];
+
+const generatedCards: Card[] = Array.from({ length: 24 }, (_, i) => ({
 	id: i,
-	title: 'Card ' + (i + 1),
+	title: families[Math.floor(Math.random() * families.length)],
 	desc: descriptions[Math.floor(Math.random() * descriptions.length)] + (i + 1),
 	performance: Math.floor(Math.random() * 100),
 	volatility: Math.floor(Math.random() * 100),

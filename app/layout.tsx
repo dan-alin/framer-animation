@@ -31,7 +31,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden bg-gray-100  min-h-screen flex flex-col items-center`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased grid grid-rows-[calc(100vh-64px)_64px] overflow-hidden bg-gray-100  min-h-screen  items-center`}
 			>
 				{children}
 				<Navbar />
