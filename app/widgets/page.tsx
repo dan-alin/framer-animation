@@ -1,30 +1,49 @@
 'use client';
 
 import FlipWidget from '@/components/flip-widget';
-import LineMock from '@/components/line-mock';
+import ScaleCard from '@/components/scale-card';
 import { cardStore } from '@/stores/cards.store';
 import { flipModalStore } from '@/stores/flipped-modal.store';
 import { motion } from 'motion/react';
-import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
 type WidgetProps = {
 	id: number;
+	onClick?: (e: number) => void;
 };
 
-const FrontWidget = ({ id }: WidgetProps) => {
+const FrontWidget = ({ id, onClick = () => null }: WidgetProps) => {
 	const { cards } = useSnapshot(cardStore);
+
 	return (
-		<div className=" h-full w-full flex flex-col gap-2 ">
-			<h1 className="   uppercase rounded-t-lg font-bold px-2 py-1 ">widget {id}</h1>
-			<div className="flex flex-col overflow-auto pb-2 gap-2">
-				{cards
-					.filter((line) => line.id <= 5)
-					.map((line) => (
-						<LineMock id={line.id} key={line.id} name={line.desc} percentage={line.performance} />
-					))}
+		<>
+			<div className=" h-full w-full flex flex-col gap-2 ">
+				<h1 className="uppercase rounded-t-lg font-bold px-2 py-1 ">widget {id}</h1>
+				<div className="flex flex-col overflow-auto pb-2 gap-2">
+					{cards
+						.filter((line) => line.id <= 5)
+						.map((line) => (
+							<ScaleCard
+								onClick={(id: number) => {
+									onClick(id);
+								}}
+								performance={line.performance}
+								volatility={line.volatility}
+								risk={line.risk}
+								tipology={line.tipology}
+								key={line.id}
+								desc={line.desc}
+								id={line.id}
+								title={line.title}
+								progressive={true}
+								inline
+							/>
+						))}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
@@ -40,8 +59,13 @@ const BackWidget = ({ id }: WidgetProps) => {
 };
 
 export default function Widget() {
+	const navigate = useRouter();
 	const { flippedId, isAnimating } = useSnapshot(flipModalStore);
+	const handleAnimatioonEnd = (id: number) => {
+		navigate.push(`/${id + 1}`);
+	};
 
+	const [openId, setOpenId] = useState(-1);
 	useEffect(() => {
 		flipModalStore.flippedId = -1;
 	}, []);
@@ -65,34 +89,54 @@ export default function Widget() {
 			<FlipWidget
 				className="col-span-1 "
 				id={1}
-				front={<FrontWidget id={1} />}
+				front={<FrontWidget onClick={(e) => setOpenId(e)} id={1} />}
 				back={<BackWidget id={1} />}
 			/>
 			<FlipWidget
 				className="col-span-1 row-span-2 "
 				id={2}
-				front={<FrontWidget id={2} />}
+				front={<FrontWidget onClick={(e) => setOpenId(e)} id={2} />}
 				back={<BackWidget id={2} />}
 			/>
 			<FlipWidget
 				className="col-span-1 "
 				id={3}
-				front={<FrontWidget id={3} />}
+				front={<FrontWidget onClick={(e) => setOpenId(e)} id={3} />}
 				back={<BackWidget id={3} />}
 			/>
 			<FlipWidget
 				className="col-span-1 "
 				id={4}
-				front={<FrontWidget id={4} />}
+				front={<FrontWidget onClick={(e) => setOpenId(e)} id={4} />}
 				back={<BackWidget id={4} />}
 			/>
 
 			<FlipWidget
 				className="col-span-1"
 				id={5}
-				front={<FrontWidget id={5} />}
+				front={<FrontWidget onClick={(e) => setOpenId(e)} id={5} />}
 				back={<BackWidget id={5} />}
 			/>
+
+			{openId !== -1 && (
+				<motion.div
+					initial={{
+						translateY: 500,
+						width: 0,
+						height: 0
+					}}
+					animate={{
+						translateY: 0,
+						width: '100vw',
+						height: '100vh'
+					}}
+					onAnimationComplete={() => handleAnimatioonEnd(openId)}
+					transition={{ duration: 0.5, delay: 0 }}
+					className="absolute flex items-center justify-center top-0 bg-gray-100  h-32 w-64   z-50 shadow-lg rounded-md"
+				>
+					test
+				</motion.div>
+			)}
 		</div>
 	);
 }
