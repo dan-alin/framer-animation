@@ -13,14 +13,13 @@ import { AnimatePresence } from 'motion/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
-import { motion } from 'motion/react';
+import NavigationAnimate from '@/components/navigation-animate';
 
 export default function Home() {
 	const [fadeOpen, setFadeOpen] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const [openId, setOpenId] = useState(-1);
 
-	const navigate = useRouter();
 	const pathname = usePathname();
 	const { open } = useSnapshot(searchStore);
 
@@ -45,10 +44,6 @@ export default function Home() {
 
 	const handleProgressiveClick = () => {
 		cardStore.progressiveAnimation = !progressiveAnimation;
-	};
-
-	const handleAnimatioonEnd = (id: number) => {
-		navigate.push(`/${id + 1}`);
 	};
 
 	useEffect(() => {
@@ -137,25 +132,7 @@ export default function Home() {
 				</div>
 			</div>
 
-			{openId !== -1 && (
-				<motion.div
-					initial={{
-						translateY: 500,
-						width: 0,
-						height: 0
-					}}
-					animate={{
-						translateY: 0,
-						width: '100vw',
-						height: '100vh'
-					}}
-					transition={{ duration: 0.5, delay: 0 }}
-					onAnimationComplete={() => handleAnimatioonEnd(openId)}
-					className="absolute flex items-center justify-center top-0 bg-gray-100  h-32 w-64   z-50 shadow-lg rounded-md"
-				>
-					test
-				</motion.div>
-			)}
+			{openId !== -1 && <NavigationAnimate openId={openId} />}
 
 			<Dialog
 				showFooter

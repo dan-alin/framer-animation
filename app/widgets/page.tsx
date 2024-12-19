@@ -1,6 +1,7 @@
 'use client';
 
 import FlipWidget from '@/components/flip-widget';
+import NavigationAnimate from '@/components/navigation-animate';
 import ScaleCard from '@/components/scale-card';
 import { cardStore } from '@/stores/cards.store';
 import { flipModalStore } from '@/stores/flipped-modal.store';
@@ -59,11 +60,7 @@ const BackWidget = ({ id }: WidgetProps) => {
 };
 
 export default function Widget() {
-	const navigate = useRouter();
 	const { flippedId, isAnimating } = useSnapshot(flipModalStore);
-	const handleAnimatioonEnd = (id: number) => {
-		navigate.push(`/${id + 1}`);
-	};
 
 	const [openId, setOpenId] = useState(-1);
 	useEffect(() => {
@@ -117,26 +114,7 @@ export default function Widget() {
 				front={<FrontWidget onClick={(e) => setOpenId(e)} id={5} />}
 				back={<BackWidget id={5} />}
 			/>
-
-			{openId !== -1 && (
-				<motion.div
-					initial={{
-						translateY: 500,
-						width: 0,
-						height: 0
-					}}
-					animate={{
-						translateY: 0,
-						width: '100vw',
-						height: '100vh'
-					}}
-					onAnimationComplete={() => handleAnimatioonEnd(openId)}
-					transition={{ duration: 0.5, delay: 0 }}
-					className="absolute flex items-center justify-center top-0 bg-gray-100  h-32 w-64   z-50 shadow-lg rounded-md"
-				>
-					test
-				</motion.div>
-			)}
+			{openId !== -1 && <NavigationAnimate openId={openId} />}
 		</div>
 	);
 }
