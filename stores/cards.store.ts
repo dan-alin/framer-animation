@@ -33,7 +33,7 @@ const generatedCards: Card[] = Array.from({ length: 24 }, (_, i) => ({
 	id: i,
 	title: families[Math.floor(Math.random() * families.length)],
 	desc: descriptions[Math.floor(Math.random() * descriptions.length)] + (i + 1),
-	performance: Math.floor(Math.random() * 100),
+	performance: Math.floor(Math.random() * 201) - 100,
 	volatility: Math.floor(Math.random() * 100),
 	risk: Math.floor(Math.random() * 100),
 	tipology: typologies[Math.floor(Math.random() * typologies.length)]

@@ -89,6 +89,7 @@ export default function Home() {
 							type="checkbox"
 							id="progressive"
 							className="size-4 cursor-pointer"
+							checked={progressiveAnimation}
 							onChange={handleProgressiveClick}
 						></input>
 						<label htmlFor="progressive">Progressive Animation</label>
@@ -97,7 +98,7 @@ export default function Home() {
 
 				<div className="flex justify-end items-center gap-4">
 					<Button onClick={handleFadeClick} type="button">
-						Fade
+						Modal
 					</Button>
 
 					<Button onClick={handleDrawerClick} type="button">
@@ -138,7 +139,7 @@ export default function Home() {
 				showFooter
 				onCancel={handleFadeClick}
 				onConfirm={handleFadeClick}
-				body="Fade modal example"
+				body="Modal example"
 				open={fadeOpen}
 				title="Modal"
 			/>

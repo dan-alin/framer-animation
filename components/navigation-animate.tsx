@@ -2,6 +2,9 @@ import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import Chip from './chip';
 import { StarIcon } from 'lucide-react';
+import { useSnapshot } from 'valtio';
+import { cardStore } from '@/stores/cards.store';
+import { cn } from '@/utils/cn';
 
 type NavigationAnimateProps = {
 	openId: number;
@@ -9,6 +12,7 @@ type NavigationAnimateProps = {
 
 const NavigationAnimate = ({ openId }: NavigationAnimateProps) => {
 	const navigate = useRouter();
+	const { cards } = useSnapshot(cardStore);
 	const handleAnimatioonEnd = (id: number) => {
 		navigate.push(`/${id + 1}`);
 	};
@@ -25,21 +29,40 @@ const NavigationAnimate = ({ openId }: NavigationAnimateProps) => {
 				width: '100vw',
 				height: '100vh'
 			}}
-			onAnimationComplete={() => handleAnimatioonEnd(openId)}
 			transition={{ duration: 0.5, delay: 0 }}
 			className="absolute flex  justify-center top-0 bg-gray-100  h-32 w-64   z-50 shadow-lg rounded-md"
 		>
-			<div className=" col-span-12 row-span-1 text-2xl text-bold text-start flex flex-col gap-2 w-full uppercase items-center p-8 ">
+			<div className="  text-2xl text-bold text-start flex flex-col gap-2 w-full uppercase items-start p-8 ">
 				<div className="flex items-center gap-2 w-full">
-					<StarIcon className="fill-gray-300 stroke-none size-6" />
-					Card {openId + 1}
+					<motion.span
+						initial={{ opacity: 0, translateX: -50 }}
+						animate={{ opacity: 1, translateX: 0 }}
+						transition={{ duration: 0.5, delay: 0.5 }}
+						onAnimationComplete={() => handleAnimatioonEnd(openId)}
+					>
+						<StarIcon className="fill-gray-300 stroke-none size-6" />{' '}
+					</motion.span>
+					{cards.find((card) => card.id === openId)?.desc}
 					{Array.from({ length: 3 }).map((_, i) => (
-						<Chip key={i} />
+						<motion.div
+							key={i}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ duration: 0.5, delay: 0.5 }}
+						>
+							<Chip key={i} />
+						</motion.div>
 					))}
 				</div>
-				<div className="text-sm   text-gray-600 uppercase items-center flex gap-2 col-span-12 row-span-1 w-full">
+
+				<motion.div
+					initial={{ opacity: 0, translateX: -50 }}
+					animate={{ opacity: 1, translateX: 0 }}
+					transition={{ duration: 0.5, delay: 0.5 }}
+					className={'text-sm  text-gray-600 uppercase items-center flex gap-2 '}
+				>
 					<Chip isCategory /> • 21/11/2024
-				</div>
+				</motion.div>
 			</div>
 		</motion.div>
 	);

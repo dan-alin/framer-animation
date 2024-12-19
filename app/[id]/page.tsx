@@ -3,11 +3,13 @@
 import Card from '@/components/card';
 import Chip from '@/components/chip';
 import Dialog from '@/components/dialog';
+import { cardStore } from '@/stores/cards.store';
 import { cn } from '@/utils/cn';
 import { StarIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { useSnapshot } from 'valtio';
 
 export default function Detail() {
 	const [sectionThree, setSectionThree] = useState(false);
@@ -16,6 +18,9 @@ export default function Detail() {
 
 	const [sectionTwoExpanded, setSectionTwoExpanded] = useState<boolean | undefined>();
 	const [isAnimating, setIsAnimating] = useState(false);
+	const [ready, setReady] = useState(false);
+
+	const { cards } = useSnapshot(cardStore);
 
 	const pathname = usePathname().replace('/', '');
 
@@ -42,8 +47,6 @@ export default function Detail() {
 	};
 
 	const handleExpand = () => {
-		//get the position to center the card
-
 		const card = sectionTwoRef.current;
 		const grid = gridRef.current;
 		if (!card || !grid) return;
@@ -51,12 +54,6 @@ export default function Detail() {
 		setSectionTwoExpanded(sectionTwoExpanded ? false : true);
 
 		const { top, left, width, height } = card.getBoundingClientRect();
-		// const { width: gridWidth, height: gridHeight } = grid.getBoundingClientRect();
-
-		// const x = gridWidth / 2 - width / 2 - left;
-
-		// //center the card vertically
-		// const y = gridHeight / 2 - height / 2 - top;
 
 		const x = window.innerWidth / 2 - width / 2 - left;
 		const y = window.innerHeight / 2 - height / 2 - top - 35;
@@ -68,7 +65,10 @@ export default function Detail() {
 	return (
 		<motion.div
 			ref={gridRef}
-			className="grid grid-rows-[repeat(11,60px)] grid-cols-12 gap-3 items-center justify-items-center  h-[calc(100vh-64px)] p-8 w-full"
+			className={cn(
+				'grid grid-rows-[repeat(11,60px)] grid-cols-12 gap-3 items-center justify-items-center  h-[calc(100vh-64px)] p-8 w-full',
+				!ready && 'pointer-events-none'
+			)}
 		>
 			<AnimatePresence>
 				{sectionTwoExpanded && !isAnimating && (
@@ -84,7 +84,7 @@ export default function Detail() {
 			<div className=" col-span-12 row-span-1 text-2xl text-bold text-start flex flex-col gap-2 w-full uppercase items-center">
 				<div className="flex items-center gap-2 w-full">
 					<StarIcon className="fill-gray-300 stroke-none size-6" />
-					Card {pathname}
+					{cards.find((card) => card.id === Number(pathname) - 1)?.desc}
 					{Array.from({ length: 3 }).map((_, i) => (
 						<Chip key={i} />
 					))}
@@ -118,6 +118,7 @@ export default function Detail() {
 					zIndex: sectionTwoExpanded ? 10 : 1
 				}}
 				onAnimationComplete={() => {
+					setReady(true);
 					setIsAnimating(false);
 				}}
 				transition={{

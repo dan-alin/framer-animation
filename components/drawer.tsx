@@ -25,6 +25,19 @@ const Drawer: FC<DrawerProps> = ({ open, closeDrawer }) => {
 				<div className=" uppercase text-gray-400 flex items-center gap-1 font-bold">
 					<input
 						type="checkbox"
+						id="typology"
+						className="size-4 cursor-pointer"
+						checked={showTipology}
+						onChange={(e) => {
+							configStore.showTipology = e.target.checked;
+						}}
+					></input>
+
+					<label htmlFor="typology"> typology</label>
+				</div>
+				<div className=" uppercase text-gray-400 flex items-center gap-1 font-bold">
+					<input
+						type="checkbox"
 						id="performance"
 						className="size-4 cursor-pointer"
 						checked={showPerformance}
@@ -34,6 +47,7 @@ const Drawer: FC<DrawerProps> = ({ open, closeDrawer }) => {
 					></input>
 					<label htmlFor="performance"> Performance</label>
 				</div>
+
 				<div className=" uppercase text-gray-400 flex items-center gap-1 font-bold">
 					<input
 						type="checkbox"
@@ -45,19 +59,6 @@ const Drawer: FC<DrawerProps> = ({ open, closeDrawer }) => {
 						}}
 					></input>
 					<label htmlFor="volatility"> volatility</label>
-				</div>
-
-				<div className=" uppercase text-gray-400 flex items-center gap-1 font-bold">
-					<input
-						type="checkbox"
-						id="typology"
-						className="size-4 cursor-pointer"
-						checked={showTipology}
-						onChange={(e) => {
-							configStore.showTipology = e.target.checked;
-						}}
-					></input>
-					<label htmlFor="typology"> typology</label>
 				</div>
 			</div>
 			<div className="self-start">

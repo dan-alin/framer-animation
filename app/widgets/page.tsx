@@ -5,43 +5,70 @@ import NavigationAnimate from '@/components/navigation-animate';
 import ScaleCard from '@/components/scale-card';
 import { cardStore } from '@/stores/cards.store';
 import { flipModalStore } from '@/stores/flipped-modal.store';
+import { cn } from '@/utils/cn';
 import { motion } from 'motion/react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
 type WidgetProps = {
 	id: number;
 	onClick?: (e: number) => void;
+	expanded?: boolean;
 };
 
-const FrontWidget = ({ id, onClick = () => null }: WidgetProps) => {
+const FrontWidget = ({ id, onClick = () => null, expanded = false }: WidgetProps) => {
 	const { cards } = useSnapshot(cardStore);
 
 	return (
 		<>
 			<div className=" h-full w-full flex flex-col gap-2 ">
 				<h1 className="uppercase rounded-t-lg font-bold px-2 py-1 ">widget {id}</h1>
-				<div className="flex flex-col overflow-auto pb-2 gap-2">
+				<div className={cn('flex flex-col overflow-auto pb-2 gap-2', expanded && 'gap-0')}>
 					{cards
 						.filter((line) => line.id <= 5)
-						.map((line) => (
-							<ScaleCard
-								onClick={(id: number) => {
-									onClick(id);
-								}}
-								performance={line.performance}
-								volatility={line.volatility}
-								risk={line.risk}
-								tipology={line.tipology}
-								key={line.id}
-								desc={line.desc}
-								id={line.id}
-								title={line.title}
-								progressive={true}
-								inline
-							/>
-						))}
+						.map((line, idx) =>
+							expanded ? (
+								<div
+									key={line.id}
+									onClick={(e) => {
+										e.stopPropagation();
+										onClick(line.id);
+									}}
+									className={cn(
+										'w-full h-16 flex items-center px-2',
+										idx % 2 == 0 && 'bg-gray-100'
+									)}
+								>
+									<span className="flex items-center gap-2 w-full">
+										<p>{line.desc}</p>
+									</span>
+									<span
+										className={cn(
+											'justify-self-end font-bold',
+											line.performance >= 0 ? 'text-green-500' : 'text-red-500'
+										)}
+									>
+										{line.performance}%
+									</span>
+								</div>
+							) : (
+								<ScaleCard
+									onClick={(id: number) => {
+										onClick(id);
+									}}
+									performance={line.performance}
+									volatility={line.volatility}
+									risk={line.risk}
+									tipology={line.tipology}
+									key={line.id}
+									desc={line.desc}
+									id={line.id}
+									title={line.title}
+									progressive={true}
+									inline
+								/>
+							)
+						)}
 				</div>
 			</div>
 		</>
@@ -92,7 +119,7 @@ export default function Widget() {
 			<FlipWidget
 				className="col-span-1 row-span-2 "
 				id={2}
-				front={<FrontWidget onClick={(e) => setOpenId(e)} id={2} />}
+				front={<FrontWidget expanded onClick={(e) => setOpenId(e)} id={2} />}
 				back={<BackWidget id={2} />}
 			/>
 			<FlipWidget

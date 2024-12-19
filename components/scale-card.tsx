@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
-import { StarIcon, EllipsisVerticalIcon } from 'lucide-react';
-import { motion } from 'motion/react';
-import { useRef, useState } from 'react';
+import { StarIcon, EllipsisVerticalIcon, TrendingUpIcon, TrendingDownIcon } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { MouseEvent, useRef, useState } from 'react';
 import { useSnapshot } from 'valtio';
 import { configStore } from '@/stores/config.store';
 type ScaleCardProps = {
@@ -29,28 +29,17 @@ const ScaleCard = ({
 	progressive = false,
 	inline = false
 }: ScaleCardProps) => {
-	const [isAnimating, setIsAnimating] = useState(false);
 	const { showVolatility, showPerformance, showTipology } = useSnapshot(configStore);
 
 	const cardRef = useRef<HTMLDivElement>(null);
 
-	const handleExpand = () => {
-		const card = cardRef.current;
-		if (!card) return;
-
-		card.blur();
-
-		setIsAnimating(true);
+	const handleExpand = (e: MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
+		onClick(id);
 	};
 
 	return inline ? (
-		<div
-			onClick={(e) => {
-				e.stopPropagation();
-				onClick(id);
-			}}
-			className="flex items-center w-full  gap-2 px-2"
-		>
+		<div onClick={handleExpand} className="flex items-center w-full  gap-2 px-2">
 			<div className="flex items-center  gap-2 w-full">
 				<span className=" flex aspect-square size-4 bg-primary-dark rounded-sm" />
 				<p>{desc}</p>
@@ -72,21 +61,18 @@ const ScaleCard = ({
 				opacity: { delay: progressive ? 0.1 * id : 0 }
 			}}
 			className={cn('min-h-20  w-full ')}
-			onClick={() => onClick(id)}
+			onClick={handleExpand}
 		>
 			<motion.div
 				ref={cardRef}
 				onClick={handleExpand}
 				onKeyDown={(e) => {
 					if (e.key === 'Enter') {
-						handleExpand();
+						onClick(id);
 					}
 				}}
 				tabIndex={0}
-				className={cn(
-					'rounded-lg flex flex-col bg-white shadow-xl cursor-pointer h-full w-full   focus:outline-none focus:ring-1 focus:ring-primary-dark',
-					isAnimating && 'pointer-events-none bg-gray-100 transition-colors duration-500 '
-				)}
+				className="rounded-lg flex flex-col bg-white shadow-xl cursor-pointer h-full w-full   focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-dark"
 			>
 				<motion.h1
 					className={cn(
@@ -100,25 +86,57 @@ const ScaleCard = ({
 					transition={{ duration: 0.7, delay: 0 }}
 					className={cn('text-sm p-2 text-gray-600 uppercase items-end h-full flex gap-4')}
 				>
-					<div className="flex flex-col w-full   ">
+					<div className="flex flex-col w-full    ">
 						<>
 							<span className="mb-1">{desc}</span>
-							{showTipology && <p className="text-xs">{tipology}</p>}
-							{showPerformance && (
-								<p className="text-xs">
-									perf. <span className="font-semibold">{performance}%</span>
-								</p>
-							)}
-							{showVolatility && (
-								<div className="flex flex-row gap-4 text-xs">
-									<p>
-										vola. <span className="font-semibold">{volatility}%</span>
-									</p>
-									<p>
-										risk. <span className="font-semibold">{risk}%</span>
-									</p>
-								</div>
-							)}
+							<AnimatePresence>
+								{showTipology && (
+									<motion.p
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{ opacity: 0 }}
+										className="text-xs"
+									>
+										{tipology}
+									</motion.p>
+								)}
+							</AnimatePresence>
+
+							<AnimatePresence>
+								{showPerformance && (
+									<motion.p
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{ opacity: 0 }}
+										className="text-xs flex flex-row gap-1"
+									>
+										perf. <span className="font-semibold">{performance}%</span>
+										{performance && performance >= 0 ? (
+											<TrendingUpIcon className=" stroke-green-500 size-4" />
+										) : (
+											<TrendingDownIcon className="stroke-red-500  size-4" />
+										)}
+									</motion.p>
+								)}
+							</AnimatePresence>
+
+							<AnimatePresence>
+								{showVolatility && (
+									<motion.div
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{ opacity: 0 }}
+										className="flex flex-row gap-4 text-xs"
+									>
+										<p>
+											vola. <span className="font-semibold">{volatility}%</span>
+										</p>
+										<p>
+											risk. <span className="font-semibold">{risk}%</span>
+										</p>
+									</motion.div>
+								)}
+							</AnimatePresence>
 
 							<div className="flex flex-row mt-2 items-center justify-between   ">
 								<StarIcon className="fill-gray-300 stroke-none size-6" />

@@ -19,7 +19,7 @@ const Search = () => {
 					initial={{ opacity: 0, translateY: -100 }}
 					animate={{ opacity: 1, translateY: 0 }}
 					exit={{ opacity: 0, translateY: -100 }}
-					className="absolute  top-0 bg-white rounded-md mx-auto mt-2 w-[95vw] h-2/3  shadow-2xl items-center justify-center py-2 px-4  z-5 border border-gray-200 "
+					className="absolute  top-0 bg-white rounded-md mx-auto mt-2 w-[95vw] h-5/6  shadow-2xl items-center justify-center py-2 px-4  z-5 border border-gray-200 "
 				>
 					<motion.input
 						onChange={() => {
